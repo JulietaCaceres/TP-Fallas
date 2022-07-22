@@ -1,2 +1,2 @@
 # TP-Fallas
-Trabajo Práctico Final Fallas. Universidad de Buenos Aires
+Trabajo Práctico Final. Análisis y Detección de Fallas. Universidad de Buenos Aires
