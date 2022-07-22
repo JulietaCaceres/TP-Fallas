@@ -1,5 +1,5 @@
 from random import choice
-from diagnosticadorPresuntivo import *
+from selector import *
 from flask import Flask
 from flask import request
 from flask import render_template
@@ -8,60 +8,48 @@ import os
 
 app = Flask(__name__)
 
+
+def response_to_boolean(response):
+    return True if response == "SI" else False
+
+
 @app.route("/")
 def home():
     return render_template('init.html')
 
+
 @app.route("/handle_data")
 def handle_data():
-
-    fiebre_mayor_37 = request.args.get('fever')
-    dolor_garganta = request.args.get('throat')
-    dif_respirar = request.args.get('breath')
-    cansancio = request.args.get('fatigue')
-    anosmia = request.args.get('smell')
-    ageusia = request.args.get('taste')
-    tos_seca = request.args.get('cough')
-    cefalea = request.args.get('headache')
-    secrecion_nasal = request.args.get('mocus')
-    grupo_riesgo = request.args.get('risk')
-    contacto_estrecho = request.args.get('contact')
-    cant_contagios_zona = request.args.get('zone')
+    sexo = request.args.get('sexo')
+    embarazo_actual = response_to_boolean(request.args.get('embarazo_actual'))
+    embarazo_planificado = response_to_boolean(request.args.get('embarazo_planificado'))
+    metodo_anticonceptivo = request.args.get('metodo_anticonceptivo')
+    enfermedad_patologica = response_to_boolean(request.args.get('enfermedad_patologica'))
+    controlada = response_to_boolean(request.args.get('controlada'))
 
     print(f"""
     Params
-        fiebre_mayor_37={fiebre_mayor_37}
-        dolor_garganta={dolor_garganta}
-        dif_respirar={dif_respirar}
-        cansancio={cansancio}
-        anosmia={anosmia}
-        ageusia={ageusia}
-        tos_seca={tos_seca}
-        cefalea={cefalea}
-        secrecion_nasal={secrecion_nasal}
-        grupo_riesgo={grupo_riesgo}
-        contacto_estrecho={contacto_estrecho}
-        cant_contagios_zona={cant_contagios_zona}
+            sexo = {sexo}
+            embarazo_actual = {embarazo_actual}
+            embarazo_planificado = {embarazo_planificado}
+            metodo_anticonceptivo = {metodo_anticonceptivo}
+            enfermedad_patologica = {enfermedad_patologica}
+            controlada = {controlada}
     """)
 
-    engine = DiagnosticadorPresuntivo()
-    engine.reset()
-    paciente_sintomas = PacienteSintomas(fiebre_mayor_37 = fiebre_mayor_37,
-        dolor_garganta = dolor_garganta,
-        dif_respirar = dif_respirar,
-        cansancio = cansancio,
-        anosmia = anosmia,
-        ageusia = ageusia,
-        tos_seca = tos_seca,
-        cefalea = cefalea,
-        secrecion_nasal = secrecion_nasal,
-        grupo_riesgo = grupo_riesgo,
-        contacto_estrecho = contacto_estrecho,
-        cant_contagios_zona = cant_contagios_zona)
-    engine.declare(paciente_sintomas)
-    engine.run()
-    print(engine.response)
-    return engine.response
+    expert_engine = Selector()
+    expert_engine.reset()
+    voluntarie = Voluntarie(
+                            sexo=Sexo(sexo),
+                            embarazo_actual=embarazo_actual,
+                            embarazo_planificado=embarazo_planificado,
+                            metodo_anticonceptivo=MetodoAnticonceptivo(metodo_anticonceptivo),
+                            enfermedad_patologica=enfermedad_patologica,
+                            controlada=controlada)
+    expert_engine.declare(voluntarie)
+    expert_engine.run()
+    print(expert_engine.response)
+    return expert_engine.response
     # if len(engine.packages) == 0:
     #     return render_template('zrp.html')
 
@@ -71,6 +59,7 @@ def handle_data():
     #     new_packs.append(pack)
 
     # return render_template('response.html', packages=new_packs)
+
 
 if __name__ == "__main__":
     app.run()
