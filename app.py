@@ -15,12 +15,18 @@ def response_to_boolean(response):
 
 @app.route("/")
 def home():
+    return render_template('index.html')
+
+
+@app.route("/encuesta", methods=['GET', 'POST'])
+def encuesta():
     return render_template('init.html')
 
 
 @app.route("/handle_data")
 def handle_data():
     sexo = request.args.get('sexo')
+    print("-----------------------entro aca con sexo: {}".format(sexo))
     embarazo_actual = response_to_boolean(request.args.get('embarazo_actual'))
     embarazo_planificado = response_to_boolean(request.args.get('embarazo_planificado'))
     metodo_anticonceptivo = request.args.get('metodo_anticonceptivo')
@@ -62,4 +68,4 @@ def handle_data():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

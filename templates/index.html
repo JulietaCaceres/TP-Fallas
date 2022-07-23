@@ -1,0 +1,142 @@
+<!-- create a page with a banner with icon and title and a body with a form with a list of items with a select and a submit button -->
+<!DOCTYPE html> 
+ <html> 
+   <head> 
+     <title>Diagnostico</title> 
+     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet"> 
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> 
+     <style> 
+       html, body { 
+       min-height: 100%;     
+       } 
+       body, div, form, input, select, textarea, label {  
+       padding: 0; 
+       margin: 0; 
+       outline: none; 
+       font-family: Roboto, Arial, sans-serif; 
+       font-size: 14px; 
+       color: rgb(32, 4, 45); 
+       line-height: 22px; 
+       } 
+       h1 {
+        position: absolute;
+        margin: 0;
+        font-size: 40px;
+        color: rgb(32 20 20);
+        z-index: 2;
+        line-height: 83px;
+      }
+       .testbox { 
+       display: flex; 
+       justify-content: center; 
+       align-items: center; 
+       height: inherit; 
+       padding: 20px; 
+       } 
+       form { 
+       width: 100%; 
+       padding: 20px; 
+       border-radius: 6px; 
+       background: rgb(242, 239, 239); 
+       box-shadow: 0 0 8px  #7c3ca7;  
+       } 
+       .banner { 
+       position: relative; 
+       height: 400px; 
+       background-image: url("/static/image.jpg");   
+       background-size: cover; 
+       display: flex; 
+       justify-content: center; 
+       align-items: center; 
+       text-align: center; 
+       } 
+       .banner::after {
+        content: "";
+        background-color: rgba(116, 82, 186, 0.748); 
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      } 
+       .banner h1 { 
+       font-size: 6em; 
+       color: rgb(24, 3, 3);
+       margin-top: 0; 
+       margin-bottom: 0; 
+       } 
+       .banner p { 
+       font-size: 1.2em; 
+       color: #fff; 
+       margin-top: 0; 
+       margin-bottom: 0; 
+       } 
+       .banner a { 
+       font-size: 1.2em; 
+       color: #fff; 
+       text-decoration: none; 
+       } 
+       .banner a:hover { 
+       text-decoration: underline; 
+       } 
+       .banner a:focus { 
+       text-decoration: underline; 
+       } 
+       .banner a:active { 
+       text-decoration: underline; 
+       } 
+       .banner a:visited { 
+       text-decoration: underline; 
+       } 
+       .banner a:link { 
+       text-decoration: underline; 
+       }
+       .button {
+        background-color: #8f57cc;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        -webkit-transition-duration: 0.4s;
+        transition-duration: 0.4s;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+        .h2 {
+        font-size: 4em;
+        font-weight: bold;
+        color: #4CAF50;
+        text-align: center;
+        font-size: 2em;
+        }
+        .h3 {
+        font-size: 2em;
+        font-weight: bold;
+        color: #4CAF50;
+        text-align: center;
+        font-size: 1.5em;
+        }
+    </style>
+    </head>
+    <body>
+      <div class="testbox">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>
+          <div class="banner">
+            <h1>Sistema de selección <br> de <br> candidatos</h1>
+          </div>
+          <h2>Le damos la bienvenida a nuestro sistema de selección de candidatos para la vacuna contra el Covid 19</h2>
+
+          <h3>Para comenzar la encuesta haga click en Iniciar</h3>
+          <form action="{{url_for('handle_data')}}" method="POST">
+            <button class="button" onclick="location.href='/encuesta'" type="button">
+              Iniciar
+            </button>
+          </form>
+
+        </form>
+      </div>
+    </body>
+</html>
