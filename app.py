@@ -23,7 +23,11 @@ def encuesta():
     return render_template('init.html')
 
 
-@app.route("/handle_data")
+@app.route("/resulta", methods=['GET', 'POST'])
+def resultado():
+    return render_template('response.html')
+
+@app.route("/handle_data", methods=['GET', 'POST'])
 def handle_data():
     sexo = request.args.get('sexo')
     print("-----------------------entro aca con sexo: {}".format(sexo))
@@ -55,16 +59,13 @@ def handle_data():
     expert_engine.declare(voluntarie)
     expert_engine.run()
     print(expert_engine.response)
-    return expert_engine.response
-    # if len(engine.packages) == 0:
-    #     return render_template('zrp.html')
-
-    # new_packs = []
-
-    # for pack in engine.packages:
-    #     new_packs.append(pack)
-
-    # return render_template('response.html', packages=new_packs)
+    #return expert_engine.response
+    #if len(expert_engine.packages) == 0:
+    #    return render_template('zrp.html')
+    #new_packs = []
+    #for pack in expert_engine.packages:
+    #    new_packs.append(pack)
+    return render_template('response.html', packages=expert_engine)
 
 
 if __name__ == "__main__":
