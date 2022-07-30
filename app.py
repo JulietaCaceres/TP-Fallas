@@ -36,6 +36,7 @@ def handle_data():
     metodo_anticonceptivo = request.args.get('metodo_anticonceptivo')
     enfermedad_patologica = response_to_boolean(request.args.get('enfermedad_patologica'))
     controlada = response_to_boolean(request.args.get('controlada'))
+    examen_fisico = request.args.get('examen_fisico')
 
     print(f"""
     Params
@@ -45,6 +46,7 @@ def handle_data():
             metodo_anticonceptivo = {metodo_anticonceptivo}
             enfermedad_patologica = {enfermedad_patologica}
             controlada = {controlada}
+            examen_fisico = {examen_fisico}
     """)
 
     expert_engine = Selector()
@@ -55,16 +57,11 @@ def handle_data():
                             embarazo_planificado=embarazo_planificado,
                             metodo_anticonceptivo=MetodoAnticonceptivo(metodo_anticonceptivo),
                             enfermedad_patologica=enfermedad_patologica,
-                            controlada=controlada)
+                            controlada=controlada,
+                            examen_fisico=examen_fisico)
     expert_engine.declare(voluntarie)
     expert_engine.run()
     print(expert_engine.response)
-    #return expert_engine.response
-    #if len(expert_engine.packages) == 0:
-    #    return render_template('zrp.html')
-    #new_packs = []
-    #for pack in expert_engine.packages:
-    #    new_packs.append(pack)
     return render_template('response.html', packages=expert_engine)
 
 

@@ -83,7 +83,7 @@ class Selector(KnowledgeEngine):
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
-                     enfermedad_patologica=True,
+                     enfermedad_patologica=False,
                      controlada=True,
                      examen_fisico=ExamenFisico.INTERMEDIO
                      )
@@ -95,7 +95,7 @@ class Selector(KnowledgeEngine):
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
-                     enfermedad_patologica=True,
+                     enfermedad_patologica=False,
                      controlada=True,
                      examen_fisico=ExamenFisico.INTERMEDIO
                      )
@@ -120,7 +120,7 @@ class Selector(KnowledgeEngine):
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
-                     enfermedad_patologica=True,
+                     enfermedad_patologica=False,
                      controlada=True,
                      examen_fisico=ExamenFisico.GRAVE
                      )
