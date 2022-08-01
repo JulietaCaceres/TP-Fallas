@@ -229,27 +229,74 @@
             </select>
         </div>
         <div class="item">
-            <p>Enfermedad Patologica</p>
+            <p>Enfermedad o Patología</p>
             <select id="enfermedad_patologica" name="enfermedad_patologica" required>
-                <option selected value="SI" >Si</option>
-                <option value="NO">No</option>
+              <option selected value="SI" >Si</option>
+              <option value="NO">No</option>
             </select>
         </div>
         <div class="item">
-            <p>Controlada</p>
+            <p>La enfermedad está controlada?</p>
             <select id="controlada" name="controlada" required>
                 <option selected value="SI" >Si</option>
                 <option value="No">No</option>
             </select>
         </div>
       <div class="item">
-          <p>Examen Fisico</p>
+          <p>Examen Físico</p>
           <select id="examen_fisico" name="examen_fisico" required>
               <option selected value="INTERMEDIO" >INTERMEDIO</option>
               <option value="NORMAL">NORMAL</option>
               <option value="GRAVE">GRAVE</option>
           </select>
       </div>
+      <div class="item">
+        <p>Auscultación Respiratoria</p>
+        <select id="auscultacion_respiratoria" name="auscultacion_respiratoria" required>
+            <option selected value="INTERMEDIO" >INTERMEDIO</option>
+            <option value="NORMAL">NORMAL</option>
+            <option value="GRAVE">GRAVE</option>
+        </select>
+      </div>
+      <div class="item">
+        <p>Auscultación Cardíaca</p>
+        <select id="auscultacion_cardiaca" name="auscultacion_cardiaca" required>
+            <option selected value="INTERMEDIO" >INTERMEDIO</option>
+            <option value="NORMAL">NORMAL</option>
+            <option value="GRAVE">GRAVE</option>
+        </select>
+      </div>
+      <div class="item">
+        <p>Pulso</p>
+        <select id="pulso" name="pulso" required>
+            <option selected value="INTERMEDIO" >INTERMEDIO</option>
+            <option value="NORMAL">NORMAL</option>
+            <option value="GRAVE">GRAVE</option>
+        </select>
+      </div>
+      <div class="item">
+        <p>Ha tenido Covid?</p>
+        <select id="covid" name="covid" required>
+          <option selected value="SI" >Si</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="item">
+        <p>Se ha vacunado?</p>
+        <select id="vacunacion" name="vacunacion" required>
+          <option selected value="SI" >Si</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="item">
+        <p>Enfermedad grave que compromete al sistema inmunológico</p>
+        <select id="enfermedad_grave" name="enfermedad_grave" required>
+          <option selected value="SI" >Si</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+
+
         <div class="container py-2 center"></div>
             <div class="col-sm-12 text-center">
                 <button id="btnDiag" class="button"  onClick="window.location.reload();">Ver diagnóstico</button>
