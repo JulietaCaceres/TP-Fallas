@@ -544,7 +544,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R39_Recall(self):
-        self.response = "NO APTO20: Condición física grave"
+        self.response = "NO APTO20: No se puede realizar el estudio si ya tuvo COVID"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -559,7 +559,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R40_Recall(self):
-        self.response = "NO APTO21: Condición física grave"
+        self.response = "NO APTO21: No se puede realizar el estudio si ya tuvo COVID"
 
 # covid: si enfermedad covid si
 
@@ -577,7 +577,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R41_Recall(self):
-        self.response = "NO APTO22: Condición física grave"
+        self.response = "NO APTO22:  No se puede realizar el estudio si ya tuvo COVID"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -593,7 +593,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R42_Recall(self):
-        self.response = "NO APTO23: Condición física grave"
+        self.response = "NO APTO23: No se puede realizar el estudio si ya tuvo COVIDe"
 
 # vacunacion: no enfermedad vac si
 
@@ -611,7 +611,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R43_Recall(self):
-        self.response = "NO APTO24: Condición física grave"
+        self.response = "NO APTO24: No puede participar del estudio si ya tiene una vacuna"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -627,7 +627,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R44_Recall(self):
-        self.response = "NO APTO25: Condición física grave"
+        self.response = "NO APTO25: No puede participar del estudio si ya tiene una vacuna"
 
 # vacunacion: si enfermedad vac si
 
