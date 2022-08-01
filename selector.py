@@ -9,9 +9,9 @@ class Voluntarie(Fact):
                 embarazo_actual: Optional[bool] = None,
                 embarazo_planificado: Optional[bool] = None,
                 metodo_anticonceptivo: Optional[MetodoAnticonceptivo] = None,
+                examen_fisico: Optional[ExamenFisico] = None,
                 enfermedad_patologica: Optional[bool] = None,
                 controlada: Optional[bool] = None,
-                examen_fisico: Optional[ExamenFisico] = None,
                 auscultacion_respiratoria : Optional[AuscultacionRespiratoria] = None,
                 auscultacion_cardiaca: Optional[AuscultacionCardiaca] = None,
                 pulso: Optional[Pulso] = None,
@@ -36,7 +36,7 @@ class Selector(KnowledgeEngine):
                      )
           )
     def R1_No_Apto(self):
-        self.response = "NO APTO1: No puede realizar prueba durante el embarazo"
+        self.response = "NO APTO: No puede realizar prueba durante el embarazo"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
@@ -44,7 +44,7 @@ class Selector(KnowledgeEngine):
                      )
           )
     def R2_No_Apto(self):
-        self.response = "NO APTO2: No puede realizar la prueba si esta planificando un embarazo."
+        self.response = "NO APTO: No puede realizar la prueba si esta planificando un embarazo."
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
@@ -53,7 +53,7 @@ class Selector(KnowledgeEngine):
                      )
           )
     def R3_No_Apto(self):
-        self.response = "NO APTO3: No puede realizar la prueba si no usa métodos anticonceptivos."
+        self.response = "NO APTO: No puede realizar la prueba si no usa métodos anticonceptivos."
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
@@ -74,7 +74,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R5_Recall(self):
-        self.response = "NO APTO4: Condición física grave"
+        self.response = "NO APTO: Condición física grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -85,7 +85,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R6_Recall(self):
-        self.response = "NO APTO5: Condición física grave"
+        self.response = "NO APTO: Condición física grave"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -96,7 +96,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R7_Recall(self):
-        self.response = "RECALL1: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
@@ -107,7 +107,7 @@ class Selector(KnowledgeEngine):
                      )
           )
     def R8_Recall(self):
-        self.response = "RECALL2: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -141,7 +141,7 @@ class Selector(KnowledgeEngine):
                      )
           )
     def R11_Recall(self):
-        self.response = "NO APTO6: Condición física grave"
+        self.response = "NO APTO: Condición física grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
@@ -153,7 +153,7 @@ class Selector(KnowledgeEngine):
                      )
           )
     def R12_Recall(self):
-        self.response = "NO APTO7: Condición física grave"
+        self.response = "NO APTO: Condición física grave"
 
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
@@ -166,7 +166,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R13_Recall(self):
-        self.response = "RECALL3: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -178,13 +178,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R14_Recall(self):
-        self.response = "RECALL4: Si su condición mejora se le volverá a llamar"
-
-# si si grave - done
-# si si intermedio - done
-
-# auscultacion resp: no normal grave - Done
-# auscultacion resp: no normal intermedio - Done
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -196,7 +190,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R15_Recall(self):
-        self.response = "NO APTO8: Condición física grave"
+        self.response = "NO APTO: Condición respiratoria grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -208,7 +202,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R16_Recall(self):
-        self.response = "NO APTO9: Condición física grave"
+        self.response = "NO APTO: Condición respiratoria grave"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -220,7 +214,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R17_Recall(self):
-        self.response = "RECALL5: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -232,10 +226,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R18_Recall(self):
-        self.response = "RECALL6: Si su condición mejora se le volverá a llamar"
-
-# auscultacion resp: si si normal grave 
-# auscultacion resp: si si normal intermedio 
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar" 
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -248,7 +239,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R19_Recall(self):
-        self.response = "NO APTO10: Condición física grave"
+        self.response = "NO APTO: Condición respiratoria grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -261,7 +252,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R20_Recall(self):
-        self.response = "NO APTO11: Condición física grave"
+        self.response = "NO APTO: Condición respiratoria grave"
 
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
@@ -275,7 +266,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R21_Recall(self):
-        self.response = "RECALL7: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -288,11 +279,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R22_Recall(self):
-        self.response = "RECALL8: Si su condición mejora se le volverá a llamar"
-
-
-# auscultacion cardiaca: no normal normal grave -done
-# auscultacion cardiaca: no normal normal intermedio - done
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
@@ -306,7 +293,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R23_Recall(self):
-        self.response = "NO APTO12: Auscultacion Cardiaca grave"
+        self.response = "NO APTO: Condición cardiaca grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -319,7 +306,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R24_Recall(self):
-        self.response = "NO APTO13: Condición física grave"
+        self.response = "NO APTO: Condición cardiaca grave"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -345,10 +332,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R26_Recall(self):
-        self.response = "RECALL10: Si su condición mejora se le volverá a llamar"
-
-# auscultacion cardiaca: si si normal normal grave -d
-# auscultacion cardiaca: si si normal normal intermedio -d
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -362,7 +346,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R27_Recall(self):
-        self.response = "NO APTO14: Condición física grave"
+        self.response = "NO APTO: Condición cardíaca grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -376,7 +360,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R28_Recall(self):
-        self.response = "NO APTO15: Condición física grave"
+        self.response = "NO APTO: Condición cardíaca grave"
 
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
@@ -391,7 +375,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R29_Recall(self):
-        self.response = "RECALL11: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -405,10 +389,8 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R30_Recall(self):
-        self.response = "RECALL12: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-# pulso: no normal normal normal grave 
-# pulso: no normal normal normal intermedio
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -422,7 +404,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R31_Recall(self):
-        self.response = "NO APTO16: Condición física grave"
+        self.response = "NO APTO: Pulso grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -436,7 +418,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R32_Recall(self):
-        self.response = "NO APTO17: Condición física grave"
+        self.response = "NO APTO: Pulso grave"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -450,7 +432,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R33_Recall(self):
-        self.response = "RECALL13: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -464,10 +446,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R34_Recall(self):
-        self.response = "RECALL14: Si su condición mejora se le volverá a llamar"
-
-# pulso: si si normal normal normal grave
-# pulso: si si normal normal normal intermedio 
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -482,7 +461,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R35_Recall(self):
-        self.response = "NO APTO18: Condición física grave"
+        self.response = "NO APTO: Pulso grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -497,7 +476,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R36_Recall(self):
-        self.response = "NO APTO19: Condición física grave"
+        self.response = "NO APTO: Pulso grave"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -512,7 +491,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R37_Recall(self):
-        self.response = "RECALL15: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -527,7 +506,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R38_Recall(self):
-        self.response = "RECALL16: Si su condición mejora se le volverá a llamar"
+        self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
 # covid: no enfermedad covid si
 
@@ -544,7 +523,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R39_Recall(self):
-        self.response = "NO APTO20: Condición física grave"
+        self.response = "NO APTO: Tuvo Covid"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -559,7 +538,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R40_Recall(self):
-        self.response = "NO APTO21: Condición física grave"
+        self.response = "NO APTO: Tuvo Covid"
 
 # covid: si enfermedad covid si
 
@@ -577,7 +556,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R41_Recall(self):
-        self.response = "NO APTO22: Condición física grave"
+        self.response = "NO APTO: Tuvo Covid"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -593,9 +572,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R42_Recall(self):
-        self.response = "NO APTO23: Condición física grave"
-
-# vacunacion: no enfermedad vac si
+        self.response = "NO APTO: Tuvo Covid"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -611,7 +588,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R43_Recall(self):
-        self.response = "NO APTO24: Condición física grave"
+        self.response = "NO APTO: Fue vacunade anteriormente"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -627,9 +604,8 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R44_Recall(self):
-        self.response = "NO APTO25: Condición física grave"
+        self.response = "NO APTO: Fue vacunade anteriormente"
 
-# vacunacion: si enfermedad vac si
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -646,7 +622,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R45_Recall(self):
-        self.response = "NO APTO26: Condición física grave"
+        self.response = "NO APTO: Fue vacunade anteriormente"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -663,9 +639,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R46_Recall(self):
-        self.response = "NO APTO27: Condición física grave"
-
-# enfermedad grave: no enf grave si
+        self.response = "NO APTO: Fue vacunade anteriormente"
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -682,7 +656,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R47_Recall(self):
-        self.response = "NO APTO28: Condición física grave"
+        self.response = "NO APTO: Tiene enfermedad grave que compromete al sistema inmunológico"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -699,7 +673,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R48_Recall(self):
-        self.response = "NO APTO29: Condición física grave"
+        self.response = "NO APTO: Tiene enfermedad grave que compromete al sistema inmunológico"
 
 # enfermedad grave: si enf grave si
 
@@ -719,7 +693,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R49_Recall(self):
-        self.response = "NO APTO30: Condición física grave"
+        self.response = "NO APTO: Tiene enfermedad grave que compromete al sistema inmunológico"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -737,7 +711,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R50_Recall(self):
-        self.response = "NO APTO: Condición física grave"
+        self.response = "NO APTO: Tiene enfermedad grave que compromete al sistema inmunológico"
 
 #aptos finales
 
