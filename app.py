@@ -1,4 +1,4 @@
-from responses import MetodoAnticonceptivo
+from responses import MetodoAnticonceptivo, Edad
 from selector import Voluntarie, Selector, Sexo
 from flask import Flask
 from flask import request
@@ -27,6 +27,7 @@ def resultado():
 
 @app.route("/handle_data", methods=['GET', 'POST'])
 def handle_data():
+    edad = request.args.get('edad')
     sexo = request.args.get('sexo')
     embarazo_actual = response_to_boolean(request.args.get('embarazo_actual'))
     embarazo_planificado = response_to_boolean(request.args.get('embarazo_planificado'))
@@ -44,6 +45,7 @@ def handle_data():
 
     print(f"""
     Params
+            edad = {edad}
             sexo = {sexo}
             embarazo_actual = {embarazo_actual}
             embarazo_planificado = {embarazo_planificado}
@@ -62,6 +64,7 @@ def handle_data():
     expert_engine = Selector()
     expert_engine.reset()
     voluntarie = Voluntarie(
+                            edad= Edad(edad),
                             sexo=Sexo(sexo),
                             embarazo_actual=embarazo_actual,
                             embarazo_planificado=embarazo_planificado,

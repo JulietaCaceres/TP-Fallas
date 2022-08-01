@@ -5,6 +5,7 @@ from typing import Optional
 
 class Voluntarie(Fact):
     def __init__(self,
+                edad: Optional[Edad] = None,
                 sexo: Optional[Sexo] = None,
                 embarazo_actual: Optional[bool] = None,
                 embarazo_planificado: Optional[bool] = None,
@@ -19,10 +20,10 @@ class Voluntarie(Fact):
                 vacunacion: Optional[Pulso] = None,
                 enfermedad_grave: Optional[Pulso] = None,
                 ):
-        attrs = dict(sexo=sexo, embarazo_actual=embarazo_actual, embarazo_planificado=embarazo_planificado,
+        attrs = dict(edad=edad, sexo=sexo, embarazo_actual=embarazo_actual, embarazo_planificado=embarazo_planificado,
                      metodo_anticonceptivo=metodo_anticonceptivo, enfermedad_patologica=enfermedad_patologica,
                      controlada=controlada, examen_fisico=examen_fisico, auscultacion_respiratoria=auscultacion_respiratoria,
-                     auscultacion_cardiaca=auscultacion_cardiaca,pulso=pulso, covid=covid, vacunacion=vacunacion, enfermedad_grave=enfermedad_grave )
+                     auscultacion_cardiaca=auscultacion_cardiaca, pulso=pulso, covid=covid, vacunacion=vacunacion, enfermedad_grave=enfermedad_grave )
         super().__init__(**{k:v for k,v in attrs.items() if v is not None})
 
 
@@ -31,14 +32,27 @@ class Selector(KnowledgeEngine):
         super().__init__()
         self.response = "No se puede determinar la enfermedad con los datos de entrada"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.MENOR
+                     )
+          )
+    def R1_No_Apto_edad_menor(self):
+        self.response = "NO APTO: No puede realizar prueba si es menor de edad"
+
+    @Rule(Voluntarie(edad=Edad.MAYOR
+                     )
+          )
+    def R1_No_Apto_edad_mayor(self):
+        self.response = "NO APTO: No puede realizar prueba si es mayor de edad"
+
+
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                      embarazo_actual=True
                      )
           )
     def R1_No_Apto(self):
         self.response = "NO APTO: No puede realizar prueba durante el embarazo"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
                      embarazo_planificado=True
                      )
@@ -46,7 +60,7 @@ class Selector(KnowledgeEngine):
     def R2_No_Apto(self):
         self.response = "NO APTO: No puede realizar la prueba si esta planificando un embarazo."
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.NO_USA
@@ -55,7 +69,7 @@ class Selector(KnowledgeEngine):
     def R3_No_Apto(self):
         self.response = "NO APTO: No puede realizar la prueba si no usa métodos anticonceptivos."
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.PRESERVATIVO
@@ -65,7 +79,7 @@ class Selector(KnowledgeEngine):
         self.response = "RECALL: Si incorpora otro metodo mas efectivo, se le llamara a futuro."
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -76,7 +90,7 @@ class Selector(KnowledgeEngine):
     def R5_Recall(self):
         self.response = "NO APTO: Condición física grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -87,7 +101,7 @@ class Selector(KnowledgeEngine):
     def R6_Recall(self):
         self.response = "NO APTO: Condición física grave"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -98,7 +112,7 @@ class Selector(KnowledgeEngine):
     def R7_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -109,7 +123,7 @@ class Selector(KnowledgeEngine):
     def R8_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -120,7 +134,7 @@ class Selector(KnowledgeEngine):
     def R9_Recall(self):
         self.response = "RECALL: No puede realizar la prueba si tiene una enfermedad o patología no controlada."
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -131,7 +145,7 @@ class Selector(KnowledgeEngine):
     def R10_Recall(self):
         self.response = "RECALL: No puede realizar la prueba si tiene una enfermedad o patología no controlada"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -143,7 +157,7 @@ class Selector(KnowledgeEngine):
     def R11_Recall(self):
         self.response = "NO APTO: Condición física grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                      embarazo_actual=False,
                      embarazo_planificado=False,
                      metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -156,7 +170,7 @@ class Selector(KnowledgeEngine):
         self.response = "NO APTO: Condición física grave"
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -168,7 +182,7 @@ class Selector(KnowledgeEngine):
     def R13_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -180,7 +194,7 @@ class Selector(KnowledgeEngine):
     def R14_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -192,7 +206,7 @@ class Selector(KnowledgeEngine):
     def R15_Recall(self):
         self.response = "NO APTO: Condición respiratoria grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -204,7 +218,7 @@ class Selector(KnowledgeEngine):
     def R16_Recall(self):
         self.response = "NO APTO: Condición respiratoria grave"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -216,7 +230,7 @@ class Selector(KnowledgeEngine):
     def R17_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -228,7 +242,7 @@ class Selector(KnowledgeEngine):
     def R18_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar" 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -241,7 +255,7 @@ class Selector(KnowledgeEngine):
     def R19_Recall(self):
         self.response = "NO APTO: Condición respiratoria grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -255,7 +269,7 @@ class Selector(KnowledgeEngine):
         self.response = "NO APTO: Condición respiratoria grave"
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -268,7 +282,7 @@ class Selector(KnowledgeEngine):
     def R21_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -282,7 +296,7 @@ class Selector(KnowledgeEngine):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -295,7 +309,7 @@ class Selector(KnowledgeEngine):
     def R23_Recall(self):
         self.response = "NO APTO: Condición cardiaca grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -308,7 +322,7 @@ class Selector(KnowledgeEngine):
     def R24_Recall(self):
         self.response = "NO APTO: Condición cardiaca grave"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -321,7 +335,7 @@ class Selector(KnowledgeEngine):
     def R25_Recall(self):
         self.response = "RECALL9: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -334,7 +348,7 @@ class Selector(KnowledgeEngine):
     def R26_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -348,7 +362,7 @@ class Selector(KnowledgeEngine):
     def R27_Recall(self):
         self.response = "NO APTO: Condición cardíaca grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -363,7 +377,7 @@ class Selector(KnowledgeEngine):
         self.response = "NO APTO: Condición cardíaca grave"
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -377,7 +391,7 @@ class Selector(KnowledgeEngine):
     def R29_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -392,7 +406,7 @@ class Selector(KnowledgeEngine):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -406,7 +420,7 @@ class Selector(KnowledgeEngine):
     def R31_Recall(self):
         self.response = "NO APTO: Pulso grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -420,7 +434,7 @@ class Selector(KnowledgeEngine):
     def R32_Recall(self):
         self.response = "NO APTO: Pulso grave"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -434,7 +448,7 @@ class Selector(KnowledgeEngine):
     def R33_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -448,7 +462,7 @@ class Selector(KnowledgeEngine):
     def R34_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -463,7 +477,7 @@ class Selector(KnowledgeEngine):
     def R35_Recall(self):
         self.response = "NO APTO: Pulso grave"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -478,7 +492,7 @@ class Selector(KnowledgeEngine):
     def R36_Recall(self):
         self.response = "NO APTO: Pulso grave"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -493,7 +507,7 @@ class Selector(KnowledgeEngine):
     def R37_Recall(self):
         self.response = "RECALL: Si su condición mejora se le volverá a llamar"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -510,7 +524,7 @@ class Selector(KnowledgeEngine):
 
 # covid: no enfermedad covid si
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -525,7 +539,7 @@ class Selector(KnowledgeEngine):
     def R39_Recall(self):
         self.response = "NO APTO: No se puede realizar el estudio si ya tuvo COVID"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -542,7 +556,7 @@ class Selector(KnowledgeEngine):
 
 # covid: si enfermedad covid si
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -558,7 +572,7 @@ class Selector(KnowledgeEngine):
     def R41_Recall(self):
         self.response = "NO APTO: No se puede realizar el estudio si ya tuvo COVID"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -576,7 +590,7 @@ class Selector(KnowledgeEngine):
 
 # vacunacion: no enfermedad vac si
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -592,7 +606,7 @@ class Selector(KnowledgeEngine):
     def R43_Recall(self):
         self.response = "NO APTO: No puede participar del estudio si ya tiene una vacuna"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -609,7 +623,7 @@ class Selector(KnowledgeEngine):
         self.response = "NO APTO: No puede participar del estudio si ya tiene una vacuna"
 
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -626,7 +640,7 @@ class Selector(KnowledgeEngine):
     def R45_Recall(self):
         self.response = "NO APTO: Fue vacunade anteriormente"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -643,7 +657,7 @@ class Selector(KnowledgeEngine):
     def R46_Recall(self):
         self.response = "NO APTO: Fue vacunade anteriormente"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -660,7 +674,7 @@ class Selector(KnowledgeEngine):
     def R47_Recall(self):
         self.response = "NO APTO: Tiene enfermedad grave que compromete al sistema inmunológico"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -679,7 +693,7 @@ class Selector(KnowledgeEngine):
 
 # enfermedad grave: si enf grave si
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -697,7 +711,7 @@ class Selector(KnowledgeEngine):
     def R49_Recall(self):
         self.response = "NO APTO: Tiene enfermedad grave que compromete al sistema inmunológico"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -717,7 +731,7 @@ class Selector(KnowledgeEngine):
 
 #aptos finales
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -734,7 +748,7 @@ class Selector(KnowledgeEngine):
     def R51_Recall(self):
         self.response = "APTO: Puede participar en el estudio"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -751,7 +765,7 @@ class Selector(KnowledgeEngine):
     def R52_Recall(self):
         self.response = "APTO: Puede participar en el estudio"
 
-    @Rule(Voluntarie(sexo=Sexo.MASCULINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,
@@ -769,7 +783,7 @@ class Selector(KnowledgeEngine):
     def R53_Recall(self):
         self.response = "APTO: Puede participar en el estudio"
 
-    @Rule(Voluntarie(sexo=Sexo.FEMENINO,
+    @Rule(Voluntarie(edad=Edad.APTO, sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
                     embarazo_planificado=False,
                     metodo_anticonceptivo=MetodoAnticonceptivo.OTROS,

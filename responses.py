@@ -1,5 +1,12 @@
 from enum import Enum
 
+
+class Edad(str, Enum):
+    MENOR = "MENOR"
+    APTO = "APTO"
+    MAYOR = "MAYOR"
+
+
 class Sexo(str, Enum):
     FEMENINO = "FEMENINO"
     MASCULINO = "MASCULINO"
