@@ -21,7 +21,8 @@ class Voluntarie(Fact):
                 ):
         attrs = dict(sexo=sexo, embarazo_actual=embarazo_actual, embarazo_planificado=embarazo_planificado,
                      metodo_anticonceptivo=metodo_anticonceptivo, enfermedad_patologica=enfermedad_patologica,
-                     controlada=controlada, examen_fisico=examen_fisico)
+                     controlada=controlada, examen_fisico=examen_fisico, auscultacion_respiratoria=auscultacion_respiratoria,
+                     auscultacion_cardiaca=auscultacion_cardiaca,pulso=pulso, covid=covid, vacunacion=vacunacion, enfermedad_grave=enfermedad_grave )
         super().__init__(**{k:v for k,v in attrs.items() if v is not None})
 
 
@@ -305,7 +306,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R23_Recall(self):
-        self.response = "NO APTO12: Condición física grave"
+        self.response = "NO APTO12: Auscultacion Cardiaca grave"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
