@@ -523,7 +523,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R39_Recall(self):
-        self.response = "NO APTO: Tuvo Covid"
+        self.response = "NO APTO: No se puede realizar el estudio si ya tuvo COVID"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -538,7 +538,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R40_Recall(self):
-        self.response = "NO APTO: Tuvo Covid"
+        self.response = "NO APTO: No se puede realizar el estudio si ya tuvo COVID"
 
 # covid: si enfermedad covid si
 
@@ -556,7 +556,7 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R41_Recall(self):
-        self.response = "NO APTO: Tuvo Covid"
+        self.response = "NO APTO: No se puede realizar el estudio si ya tuvo COVID"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -572,7 +572,9 @@ class Selector(KnowledgeEngine):
                     )
           )
     def R42_Recall(self):
-        self.response = "NO APTO: Tuvo Covid"
+        self.response = "NO APTO: No se puede realizar el estudio si ya tuvo COVID"
+
+# vacunacion: no enfermedad vac si
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
                     embarazo_actual=False,
@@ -588,7 +590,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R43_Recall(self):
-        self.response = "NO APTO: Fue vacunade anteriormente"
+        self.response = "NO APTO: No puede participar del estudio si ya tiene una vacuna"
 
     @Rule(Voluntarie(sexo=Sexo.FEMENINO,
                     embarazo_actual=False,
@@ -604,7 +606,7 @@ class Selector(KnowledgeEngine):
                     )
         )
     def R44_Recall(self):
-        self.response = "NO APTO: Fue vacunade anteriormente"
+        self.response = "NO APTO: No puede participar del estudio si ya tiene una vacuna"
 
 
     @Rule(Voluntarie(sexo=Sexo.MASCULINO,
